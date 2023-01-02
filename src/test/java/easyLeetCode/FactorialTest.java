@@ -3,7 +3,7 @@ package easyLeetCode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+//это не из Литкода - это просто
 class FactorialTest {
 
     @Test
