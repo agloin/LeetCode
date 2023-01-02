@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 class ListNode {
     int val;
@@ -30,14 +31,11 @@ class MergeTwoSortedLists {
 
         if (list1 == null && list2 == null) {
             return null;
-        }
-        else if (list1 == null) {
+        } else if (list1 == null) {
             return list2;
-        }
-        else if (list2 == null) {
+        } else if (list2 == null) {
             return list1;
-        }
-        else {
+        } else {
             while (list1 != null) {
                 while (list2 != null) {
                     int val2 = list2.val;
@@ -72,32 +70,44 @@ class MergeTwoSortedListsTest {
     @Test
     void mergeTwoSortedListsTest() {
         MergeTwoSortedLists mergeTwoSortedLists = new MergeTwoSortedLists();
-        ListNode list1 = new ListNode(3, null);
-        ListNode list2 = new ListNode(2, list1);
-        ListNode list3 = new ListNode(1, list2);
 
-        ListNode list4 = new ListNode(1, null);
-        ListNode list5 = new ListNode(3, list4);
-        ListNode list6 = new ListNode(4, list5);
+        int[] nums1 = new int[]{1, 2, 3};
+        int[] nums2 = new int[]{1, 3, 4};
+        int[] commonNums = new int[]{1, 1, 2, 3, 3, 4};
+        ListNode list1 = intSortedArrayToListNode(nums1);
+        ListNode list2 = intSortedArrayToListNode(nums2);
 
-        ListNode resCompare1 = new ListNode(4, null);
-        ListNode resCompare2 = new ListNode(3, resCompare1);
-        ListNode resCompare3 = new ListNode(3, resCompare2);
-        ListNode resCompare4 = new ListNode(2, resCompare3);
-        ListNode resCompare5 = new ListNode(1, resCompare4);
-        ListNode resCompare6 = new ListNode(1, resCompare5);
 
-        var res = mergeTwoSortedLists.mergeTwoLists(list3, list6);
+        var res = mergeTwoSortedLists.mergeTwoLists(list1, list2);
+
 
         ListNode head;
-        head = resCompare6;
+        head = intSortedArrayToListNode(commonNums);
 
         while (head != null) {
-
             assertEquals(head.val, res.val);
             head = head.next;
             res = res.next;
         }
+    }
+
+
+    ListNode intSortedArrayToListNode(int[] nums) {
+        ListNode head = new ListNode();
+        ListNode tmp = new ListNode();
+
+        int i = 0;
+        for (int num : nums) {
+            head.val = num;
+            head.next = new ListNode();
+            if (i == 0) {
+                tmp = head;
+                i++;
+            }
+            head = head.next;
+        }
+        tmp.next = null;
+        return tmp;
     }
 
 }
