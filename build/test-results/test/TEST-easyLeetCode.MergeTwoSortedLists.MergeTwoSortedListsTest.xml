@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="easyLeetCode.MergeTwoSortedLists.MergeTwoSortedListsTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-02T22:09:09" hostname="dmitrii-VPCF23S1R" time="0.03">
-  <properties/>
-  <testcase name="mergeTwoSortedListsTest()" classname="easyLeetCode.MergeTwoSortedLists.MergeTwoSortedListsTest" time="0.03"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
