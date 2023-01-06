@@ -32,22 +32,7 @@ class MergeTwoSortedLists {
             return list1;
 
         ListNode head = new ListNode();
-
-        if (list1.val < list2.val) {
-            head.next = list1;
-            list1 = list1.next;
-        } else {
-            head.next = list2;
-            list2 = list2.next;
-        }
-        if (list1 == null) {
-            head.next.next = list2;
-        }
-        if (list2 == null) {
-            head.next.next = list1;
-        }
-
-        ListNode tmp = head.next;
+        ListNode tmp = head;
 
         while (list1 != null && list2 != null) {
             if (list1.val < list2.val) {
@@ -58,13 +43,12 @@ class MergeTwoSortedLists {
                 list2 = list2.next;
             }
             tmp = tmp.next;
-
-            if (list1 == null) {
-                tmp.next = list2;
-            }
-            if (list2 == null) {
-                tmp.next = list1;
-            }
+        }
+        if (list1 == null) {
+            tmp.next = list2;
+        }
+        if (list2 == null) {
+            tmp.next = list1;
         }
         return head.next;
     }
@@ -81,21 +65,18 @@ class MergeTwoSortedListsTest {
         int[] nums2 = new int[]{1, 3, 4};
 
         int[] commonNums = new int[]{1, 1, 2, 3, 4, 4};
-        ListNode list1 = intSortedArrayToListNode(nums1);
-        ListNode list2 = intSortedArrayToListNode(nums2);
+        ListNode list1 = toListNode(nums1);
+        ListNode list2 = toListNode(nums2);
 
 
         var res = mergeTwoSortedLists.mergeTwoLists(list1, list2);
 
 
         ListNode head;
-        head = intSortedArrayToListNode(commonNums);
+        head = toListNode(commonNums);
 
-        while (head != null) {
-            assertEquals(head.val, res.val);
-            head = head.next;
-            res = res.next;
-        }
+        compareTwoListsNode(head, res);
+
     }
 
     @Test
@@ -106,19 +87,17 @@ class MergeTwoSortedListsTest {
         int[] nums4 = new int[]{1};
         int[] commonNums = new int[]{1, 2};
 
-        ListNode list1 = intSortedArrayToListNode(nums3);
-        ListNode list2 = intSortedArrayToListNode(nums4);
+        ListNode list1 = toListNode(nums3);
+        ListNode list2 = toListNode(nums4);
+
 
         var res = mergeTwoSortedLists.mergeTwoLists(list1, list2);
 
-        ListNode head;
-        head = intSortedArrayToListNode(commonNums);
 
-        while (head != null) {
-            assertEquals(head.val, res.val);
-            head = head.next;
-            res = res.next;
-        }
+        ListNode head;
+        head = toListNode(commonNums);
+
+        compareTwoListsNode(head, res);
     }
 
     @Test
@@ -127,21 +106,17 @@ class MergeTwoSortedListsTest {
         int[] nums1 = new int[]{};
         int[] nums2 = new int[]{};
         int[] commonNums = new int[]{};
-        ListNode list1 = intSortedArrayToListNode(nums1);
-        ListNode list2 = intSortedArrayToListNode(nums2);
+        ListNode list1 = toListNode(nums1);
+        ListNode list2 = toListNode(nums2);
 
 
         var res = mergeTwoSortedLists.mergeTwoLists(list1, list2);
 
 
         ListNode head;
-        head = intSortedArrayToListNode(commonNums);
+        head = toListNode(commonNums);
 
-        while (head != null) {
-            assertEquals(head.val, res.val);
-            head = head.next;
-            res = res.next;
-        }
+        compareTwoListsNode(head, res);
     }
 
     @Test
@@ -150,36 +125,36 @@ class MergeTwoSortedListsTest {
         int[] nums1 = new int[]{};
         int[] nums2 = new int[]{0};
         int[] commonNums = new int[]{0};
-        ListNode list1 = intSortedArrayToListNode(nums1);
-        ListNode list2 = intSortedArrayToListNode(nums2);
+        ListNode list1 = toListNode(nums1);
+        ListNode list2 = toListNode(nums2);
 
 
         var res = mergeTwoSortedLists.mergeTwoLists(list1, list2);
 
 
         ListNode head;
-        head = intSortedArrayToListNode(commonNums);
+        head = toListNode(commonNums);
 
+    }
+
+
+    void compareTwoListsNode(ListNode head, ListNode res) {
         while (head != null) {
-            assertEquals(head.val, res.val);
+            assertEquals (head.val, res.val);
             head = head.next;
             res = res.next;
         }
     }
 
-
-    ListNode intSortedArrayToListNode(int[] nums) {
+    ListNode toListNode(int[] nums) {
         ListNode head = new ListNode();
         ListNode tmp = new ListNode();
         int length = nums.length;
 
-//        int i = 0;
         for (int i = 0; i < length; i++) {
             head.val = nums[i];
             head.next = new ListNode();
             if (i == 0) tmp = head;
-
-
             if (i != length - 1) head = head.next;
             else head.next = null;
         }
