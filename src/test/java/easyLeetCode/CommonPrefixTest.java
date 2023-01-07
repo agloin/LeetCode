@@ -35,9 +35,17 @@ class CommonPrefix {
 class CommonPrefixTest {
 
     @Test
-    void longestCommonPrefixWithCommonSymbolsTest() {
+    void longestCommonPrefixWithCommonPrefixTest() {
         CommonPrefix commonPrefix = new CommonPrefix();
         String[] strs = new String[]{"flower","flow","flight"};
+        String answer = "fl";
+
+        assertEquals(answer, commonPrefix.longestCommonPrefix(strs));
+    }
+    @Test
+    void longestCommonPrefixWithOneWordWithoutCommonPrefixTest() {
+        CommonPrefix commonPrefix = new CommonPrefix();
+        String[] strs = new String[]{"flower","flow","withoutCommonPrefix"};
         String answer = "fl";
 
         assertEquals(answer, commonPrefix.longestCommonPrefix(strs));
@@ -53,7 +61,7 @@ class CommonPrefixTest {
     }
 
     @Test
-    void longestCommonPrefixWithoutCommonSymbolsTest() {
+    void longestCommonPrefixWithoutCommonPrefixTest() {
         CommonPrefix commonPrefix = new CommonPrefix();
         String[] strs = new String[]{"dog","racecar","car"};
 
