@@ -1,8 +1,9 @@
 package easyLeetCode;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //https://leetcode.com/problems/climbing-stairs/
 
@@ -25,18 +26,22 @@ class ClimbingStairs {
 
 class ClimbingStairsTest {
 
-    @Test
-    void climbingStairsTest() {
-        ClimbingStairs climbingStairs = new ClimbingStairs();
-        int n0 = 0;
-        int n1 = 1;
-        int n5 = 5;
-        int nMax = 45;
 
-        assertEquals(1, climbingStairs.climbStairs(n0));
-        assertEquals(1, climbingStairs.climbStairs(n1));
-        assertEquals(8, climbingStairs.climbStairs(n5));
-        assertEquals(1836311903, climbingStairs.climbStairs(nMax));
+    @ParameterizedTest()
+    @CsvSource(
+            value = {
+                    "0, 1",
+                    "1, 1",
+                    "5, 8",
+                    "45, 1836311903"
+            }
+    )
+    void climbingStairsTest(int n, int answer) {
+        ClimbingStairs climbingStairs = new ClimbingStairs();
+
+
+        assertEquals(answer, climbingStairs.climbStairs(n));
+
     }
 
 }
