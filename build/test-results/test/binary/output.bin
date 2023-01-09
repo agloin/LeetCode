@@ -1,17 +1,0 @@
-
-stack [)]
-stack [), )]
-
-stack [)]
-stack [), ]]
-
-stack [)]
-stack [), }]
-
-stack [)]
-	stack []
-
-stack [)]
-	stack []
-
-stack [)]
