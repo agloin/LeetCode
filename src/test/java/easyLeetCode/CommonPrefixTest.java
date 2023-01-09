@@ -1,33 +1,46 @@
 package easyLeetCode;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //https://leetcode.com/problems/longest-common-prefix/
 
-//"flower" "flow" "flight"
 class CommonPrefix {
     public String longestCommonPrefix(String[] strs) {
-        int j = 0;
-        int k = 1;
-        StringBuilder answer = new StringBuilder(strs[0]);
+        int strsLength = strs.length;
 
-        if (strs.length == 1) {
+        if (strsLength == 1) {
             return strs[0];
         }
-        while (k < strs.length) {
-            while (j < answer.length() && j < strs[k].length() && answer.charAt(j) == strs[k].charAt(j)) {
-                j++;
-            }
-            answer = new StringBuilder(strs[0].substring(0, j));
-            if (j == 0) {
+        int numStr = 1;
+
+        for (int i = 0; i < strsLength - 1; i++) {
+            if (strs[i].length() == 0 || strs[i + 1].length() == 0) {
                 return "";
             }
-            j = 0;
-            k++;
+            if (strs[i].length() < strs[i + 1].length() && strs[i].length() < strs[numStr].length()) { numStr = i; }
+            else if (strs[numStr].length() > strs[i + 1].length()) {
+                numStr = i + 1;
+            }
         }
-        return answer.toString();
+
+        int k = 0;
+        int index = 10000;
+        for (int i = 0; i < strsLength; i++) {
+            if (i != numStr) {
+                while (k < strs[numStr].length() && strs[numStr].charAt(k) == strs[i].charAt(k)) {
+                    k++;
+                }
+                if (k == 0) return "";
+                if (k < index)
+                    index = k;
+            }
+            k = 0;
+        }
+        return strs[numStr].substring(0, index);
     }
 }
 
@@ -37,33 +50,39 @@ class CommonPrefixTest {
     @Test
     void longestCommonPrefixWithCommonPrefixTest() {
         CommonPrefix commonPrefix = new CommonPrefix();
-        String[] strs = new String[]{"flower","flow","flight"};
-        String answer = "fl";
+        String[] strs = new String[]{"flower", "flow", "flight"};
 
-        assertEquals(answer, commonPrefix.longestCommonPrefix(strs));
+        assertEquals("fl", commonPrefix.longestCommonPrefix(strs));
     }
-    @Test
-    void longestCommonPrefixWithOneWordWithoutCommonPrefixTest() {
-        CommonPrefix commonPrefix = new CommonPrefix();
-        String[] strs = new String[]{"flower","flow","withoutCommonPrefix"};
-        String answer = "fl";
 
-        assertEquals(answer, commonPrefix.longestCommonPrefix(strs));
+    @ParameterizedTest
+    @CsvSource(value = {
+            "c, acc, ccc",
+            "a, a, b",
+            "reflower, flow, flight",
+            "abab, aba, ''"
+    }
+
+    )
+    void longestCommonPrefixWithOneWordWithoutCommonPrefixTest(String str1, String str2, String str3) {
+        CommonPrefix commonPrefix = new CommonPrefix();
+        String[] strs = new String[]{str1, str2, str3};
+
+        assertEquals("", commonPrefix.longestCommonPrefix(strs));
     }
 
     @Test
     void longestCommonPrefixWithOneEmptyElementTest() {
         CommonPrefix commonPrefix = new CommonPrefix();
         String[] strs = new String[]{"flower"};
-        String answer = strs[0];
 
-        assertEquals(answer, commonPrefix.longestCommonPrefix(strs));
+        assertEquals("flower", commonPrefix.longestCommonPrefix(strs));
     }
 
     @Test
     void longestCommonPrefixWithoutCommonPrefixTest() {
         CommonPrefix commonPrefix = new CommonPrefix();
-        String[] strs = new String[]{"dog","racecar","car"};
+        String[] strs = new String[]{"dog", "racecar", "car"};
 
         assertEquals("", commonPrefix.longestCommonPrefix(strs));
     }
