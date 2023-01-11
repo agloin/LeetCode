@@ -3,14 +3,15 @@ package easyLeetCode;
 //это не из Литкода
 
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Factorial {
     int fact(int n) {
-        if (n==0) return 1;
-        if (n >=13) return -1;
+        if (n == 0) return 1;
+        if (n >= 13) return -1;
         else {
             int f = 1;
             for (int i = 2; i <= n; i++) f *= i;
@@ -21,33 +22,19 @@ class Factorial {
 
 
 class FactorialTest {
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "1, 1",
+                    "5, 120",
+                    "6, 720",
+                    "12, 479001600"
 
-
-    @Test
-    void factWithNumberOne() {
+            }
+    )
+    void factWithNumberOne(int n, int answer) {
         Factorial factorial = new Factorial();
 
-        assertEquals(1, factorial.fact(1));
-    }
-
-    @Test
-    void factWithNumberOnFive() {
-        Factorial factorial = new Factorial();
-
-        assertEquals(120, factorial.fact(5));
-    }
-
-    @Test
-    void factWithNumberOnMaxNumber() {
-        Factorial factorial = new Factorial();
-
-        assertEquals(479001600, factorial.fact(12));
-    }
-
-    @Test
-    void factOverflow() {
-        Factorial factorial = new Factorial();
-
-        assertEquals(-1, factorial.fact(13));
+        assertEquals(answer, factorial.fact(n));
     }
 }
