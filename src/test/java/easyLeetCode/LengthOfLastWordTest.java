@@ -10,19 +10,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LengthOfLastWord {
     public int lengthOfLastWord(String s) {
         int i = s.length() - 1;
-        int res = 0;
 
-        if (i == 0 && s.charAt(i) != ' ' && s.charAt(i) != '\t') return 1;
-        else if (i == 0 && (s.charAt(i) == ' ' || s.charAt(i) == '\t')) return 0;
+        if (i == 0 && s.charAt(i) != ' ') return 1;
+        else if (i == 0 && s.charAt(i) == ' ') return 0;
 
-        while (s.charAt(i) == ' ' || s.charAt(i) == '\t') {
+        while (i>= 0 && s.charAt(i) == ' ') {
             i--;
         }
-        while (i >= 0 && (s.charAt(i) != ' ' || s.charAt(i) == '\t')) {
-            res++;
+        int endOfLastWord = i;
+
+        while (i >= 0 && s.charAt(i) != ' ') {
             i--;
         }
-        return res;
+        return endOfLastWord - i;
     }
 }
 
@@ -39,7 +39,7 @@ class LengthOfLastWordTest {
     void lengthOfLastWordWithEmptyString() {
         LengthOfLastWord lengthOfLastWord = new LengthOfLastWord();
 
-        assertEquals("".length(), lengthOfLastWord.lengthOfLastWord(" "));
+        assertEquals("".length(), lengthOfLastWord.lengthOfLastWord("         "));
     }
 
     @Test
