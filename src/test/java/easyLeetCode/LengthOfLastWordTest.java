@@ -11,7 +11,6 @@ class LengthOfLastWord {
     public int lengthOfLastWord(String s) {
         int i = s.length() - 1;
 
-        if (i == 0 && s.charAt(i) != ' ') return 1;
         while (i>= 0 && s.charAt(i) == ' ') {
             i--;
         }
