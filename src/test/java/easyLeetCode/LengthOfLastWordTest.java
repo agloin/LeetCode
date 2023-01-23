@@ -1,6 +1,7 @@
 package easyLeetCode;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,28 +25,20 @@ class LengthOfLastWord {
 }
 
 class LengthOfLastWordTest {
-    @Test
-    void lengthOfLastWord() {
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "Hello World, World",
+                    "'   fly me   to   the moon  ', 'moon'",
+                    "'a ', 'a'",
+                    "'         ', ''"
+            }
+    )
+    void lengthOfLastWord(String s, String answer) {
         LengthOfLastWord lengthOfLastWord = new LengthOfLastWord();
 
-        assertEquals("World".length(), lengthOfLastWord.lengthOfLastWord("Hello World"));
-        assertEquals("moon".length(), lengthOfLastWord.lengthOfLastWord("   fly me   to   the moon  "));
+
+        assertEquals(answer.length(), lengthOfLastWord.lengthOfLastWord(s));
     }
-
-    @Test
-    void lengthOfLastWordWithEmptyString() {
-        LengthOfLastWord lengthOfLastWord = new LengthOfLastWord();
-
-        assertEquals("".length(), lengthOfLastWord.lengthOfLastWord("         "));
-    }
-
-    @Test
-    void lengthOfLastWordWithOneSymbolAndSpaceInEnd() {
-        LengthOfLastWord lengthOfLastWord = new LengthOfLastWord();
-
-        assertEquals("a".length(), lengthOfLastWord.lengthOfLastWord("a "));
-        assertEquals("a".length(), lengthOfLastWord.lengthOfLastWord("a"));
-    }
-
 
 }
