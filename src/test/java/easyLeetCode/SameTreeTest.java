@@ -43,7 +43,7 @@ class SameTree {
             TreeNode treeNodeQ = stackQ.pop();
 
             if (treeNodeP.val != treeNodeQ.val) return false;
-            if (treeNodeP.left != null || treeNodeQ.left != null) {
+            if (treeNodeP.left != null && treeNodeQ.left != null) {
                 stackP.push(treeNodeP.left);
                 stackQ.push(treeNodeQ.left);
             } else return false;
