@@ -46,12 +46,15 @@ class SameTree {
             if (treeNodeP.left != null && treeNodeQ.left != null) {
                 stackP.push(treeNodeP.left);
                 stackQ.push(treeNodeQ.left);
+            } else if (treeNodeP.left == null && treeNodeQ.left == null) {
             } else return false;
+
 
 
             if (treeNodeP.right != null && treeNodeQ.right != null) {
                 stackP.push(treeNodeP.right);
                 stackQ.push(treeNodeQ.right);
+            } else if (treeNodeP.right == null && treeNodeQ.right == null) {
             } else return false;
         }
         return stackP.empty() && stackQ.empty();
