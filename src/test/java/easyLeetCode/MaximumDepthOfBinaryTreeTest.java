@@ -6,9 +6,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.Stack;
 
 class TreeNode {
     int val;
@@ -34,9 +33,29 @@ class MaximumDepthOfBinaryTree {
         if(root == null) {
             return 0;
         }
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
+
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<Integer> value = new Stack<>();
+
+        stack.push(root);
+        value.push(1);
+
         int count = 0;
+        while (!stack.empty()) {
+            TreeNode treeNode = stack.pop();
+            int tmp = value.pop();
+
+            count = Math.max(tmp, count);
+
+            if (treeNode.left != null) {
+                stack.push(treeNode.left);
+                value.push(tmp + 1);
+            }
+            if (treeNode.right != null) {
+                stack.push(treeNode.right);
+                value.push(tmp + 1);
+            }
+        }
 
         return count;
     }
@@ -71,6 +90,7 @@ public class MaximumDepthOfBinaryTreeTest {
         while (idx < nodes.size()) {
             int cnt = 0;
             for (int i = 0; i < ln && idx + i < nodes.size(); i++) {
+
                 TreeNode node = nodes.get(idx + i);
                 if (node == null) continue;
                 int leftIndex = idx + ln + cnt * 2;
