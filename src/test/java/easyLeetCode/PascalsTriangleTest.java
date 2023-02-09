@@ -11,10 +11,11 @@ import java.util.List;
 class PascalsTriangle {
     public List<List<Integer>> generate(int numRows) {
         List<List<Integer>> res = new ArrayList<>();
-        List<Integer> tmp = new ArrayList<>();
+        List<Integer> tmp = null;
 
         for (int i = 0; i < numRows; ++i) {
             List<Integer> row = new ArrayList<>();
+
             for (int j = 0; j <= i; ++j) {
                 if (j == 0 || j == i) {
                     row.add(1);
@@ -35,14 +36,13 @@ public class PascalsTriangleTest {
     @CsvSource(
             value = {
                     "'[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]', 5",
-                    "'[1]', 1"
+                    "'[1]', 1",
+                    "'[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1],[1,5,10,10,5,1]', 6"
             }
     )
     void PascalsTriangleGenerateTest(String compare, int numRows) {
         PascalsTriangle pascalsTriangle = new PascalsTriangle();
-        List<List<Integer>> compareAnswer;
-
-        compareAnswer = fill(compare);
+        List<List<Integer>> compareAnswer = fill(compare);
 
         var res = pascalsTriangle.generate(numRows);
 
@@ -61,6 +61,7 @@ public class PascalsTriangleTest {
         for (String row : rows) {
             List<Integer> numbers = new ArrayList<>();
             String[] elements = row.split(",");
+
             for (String element : elements) {
                 if (isNumeric(element)) {
                     numbers.add(Integer.parseInt(element));
