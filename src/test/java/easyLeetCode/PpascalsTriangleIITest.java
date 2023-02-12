@@ -1,6 +1,7 @@
 package easyLeetCode;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -52,6 +53,14 @@ public class PpascalsTriangleIITest {
 
     }
 
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "'[1,A,6,4,1]', 4, NumberFormatException"
+            }
+    )
+
+
 
     // ВСЕ, ЧТО НИЖЕ НАПИСАЛ CHAT-GPT
     public List<Integer> fill(String inputString) {
@@ -63,8 +72,12 @@ public class PpascalsTriangleIITest {
             String[] elements = row.split(",");
 
             for (String element : elements) {
-                if (isNumeric(element)) {
-                    numbers.add(Integer.parseInt(element));
+                try {
+                    if (isNumeric(element)) {
+                        numbers.add(Integer.parseInt(element));
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println(ex.getCause().toString());
                 }
             }
         }
