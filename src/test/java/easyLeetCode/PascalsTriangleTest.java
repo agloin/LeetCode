@@ -63,8 +63,12 @@ public class PascalsTriangleTest {
             String[] elements = row.split(",");
 
             for (String element : elements) {
-                if (isNumeric(element)) {
-                    numbers.add(Integer.parseInt(element));
+                try {
+                    if (isNumeric(element)) {
+                        numbers.add(Integer.parseInt(element));
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println(ex.getCause().toString());
                 }
             }
             result.add(numbers);
