@@ -3,11 +3,14 @@ package easyLeetCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Stack;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 class MyLinkedList<E> {
 
     private Node<E> head;
+    private int size = 1;
 
     public void add(E element) {
         if (head == null) head = new Node<>(element, null);
@@ -16,7 +19,27 @@ class MyLinkedList<E> {
 
             while (tmp.next != null) tmp = tmp.next;
             tmp.next = new Node<>(element, null);
+            size++;
         }
+    }
+
+    @SafeVarargs // не понимаю, почему здесь нужна эта аннотация и модификатор final
+    public final void addAll(E... values) {
+        for (var element : values) {
+            add(element);
+        }
+    }
+
+    public void remove(int index) {
+        Node<E> tmp = head;
+
+        if (size == 0 || index >= size || index < 0) throw new NoSuchElementException();
+
+        for (int i = 0; i < index - 1; i++) {
+            tmp = tmp.next;
+        }
+        tmp.next = tmp.next.next;
+        size--;
     }
 
     public E get(int index) {
@@ -31,34 +54,21 @@ class MyLinkedList<E> {
         return tmp.element;
     }
 
-    int size() {
+    public int size() {
         if (head == null) return 0;
-
-        Node<E> tmp = head;
-        int size = 1;
-        while (tmp.next != null) {
-            size++;
-            tmp = tmp.next;
-        }
         return size;
     }
 
-    MyLinkedList<E> reverse() {
-        Stack<E> stack = new Stack<>();
-        Node<E> tmp = head;
+    public MyLinkedList<E> reverse() {
+        MyLinkedList<E> tmp = new MyLinkedList<>();
 
-        while (tmp != null) {
-            stack.push(tmp.element);
-            tmp = tmp.next;
+        for (int i = size - 1; i >= 0; i--) {
+            tmp.add(get(i));
         }
-
-        MyLinkedList<E> myLinkedList = new MyLinkedList<>();
-
-        while (!stack.empty()) {
-            myLinkedList.add(stack.pop());
-        }
-        return myLinkedList;
+        return tmp;
     }
+
+
 
     private static class Node<E> {
         E element;
@@ -77,30 +87,56 @@ public class MyLinkedListTest {
     void testAdd() {
         MyLinkedList<Integer> list = new MyLinkedList<>();
 
+        LinkedList<Integer> compareList  = new LinkedList<>();
+        compareList.addAll(Arrays.asList(1, 2, 3, 4));
+
         list.add(1);
         list.add(2);
         list.add(3);
         list.add(4);
 
-        Assertions.assertEquals(4, list.size());
+
+        Assertions.assertEquals(compareList.size(), list.size());
+
+        for (int i = compareList.size() - 1; i >= 0; i--) {
+            Assertions.assertEquals(compareList.get(i), list.get(i));
+        }
+    }
+
+    @Test
+    void testAddAll() {
+        MyLinkedList<Integer> list = new MyLinkedList<>();
+
+        list.addAll(1, 2, 3, 4);
+
+        LinkedList<Integer> compareList = new LinkedList<>(Arrays.asList(1, 2, 3, 4));
+
+        int size = list.size();
+
+
+        Assertions.assertEquals(compareList.size(), size);
+
+
+        for (int i = 0; i < size; i++) {
+            Assertions.assertEquals(compareList.get(i), list.get(i));
+        }
 
 
     }
-
     @Test
     void testSize() {
         MyLinkedList<Integer> list = new MyLinkedList<>();
 
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
+        list.addAll(1, 2, 3, 4);
+
+        LinkedList<Integer> compareList = new LinkedList<>(Arrays.asList(1, 2, 3, 4));
 
         int size = list.size();
         Assertions.assertEquals(4, size);
 
+
         for (int i = 0; i < size; i++) {
-            Assertions.assertEquals(1 + i, list.get(i));
+            Assertions.assertEquals(compareList.get(i), list.get(i));
         }
 
 
@@ -109,24 +145,40 @@ public class MyLinkedListTest {
     @Test
     void testReverse() {
         MyLinkedList<Integer> list = new MyLinkedList<>();
-        MyLinkedList<Integer> listCompare = new MyLinkedList<>();
+        LinkedList<Integer> listCompare = new LinkedList<>(Arrays.asList(4, 3, 2, 1));
 
 
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
+        list.addAll(1, 2, 3, 4);
 
-        listCompare.add(4);
-        listCompare.add(3);
-        listCompare.add(2);
-        listCompare.add(1);
 
         MyLinkedList<Integer> listReverse = list.reverse();
         for (int i = 0; i < list.size(); i++) {
             Assertions.assertEquals(listCompare.get(i), listReverse.get(i));
         }
 
+
+    }
+
+    @Test
+    void testRemove() {
+        MyLinkedList<Integer> list = new MyLinkedList<>();
+
+        list.addAll(1, 2, 3, 4);
+
+        list.remove(3);
+
+        LinkedList<Integer> compareList = new LinkedList<>(Arrays.asList(1, 2, 3));
+
+
+        Assertions.assertEquals(compareList.size(), list.size());
+
+
+        int compareListLastIndex = compareList.size() - 1;
+
+
+        for (int i = 0; i <= compareListLastIndex; i++) {
+            Assertions.assertEquals(compareList.get(i), list.get(i));
+        }
 
     }
 
