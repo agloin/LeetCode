@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 class MyLinkedList<E> {
@@ -98,9 +99,7 @@ public class MyLinkedListTest {
 
         Assertions.assertEquals(compareList.size(), list.size());
 
-        for (int i = compareList.size() - 1; i >= 0; i--) {
-            Assertions.assertEquals(compareList.get(i), list.get(i));
-        }
+        compare(compareList, list);
     }
 
     @Test
@@ -117,9 +116,7 @@ public class MyLinkedListTest {
         Assertions.assertEquals(compareList.size(), size);
 
 
-        for (int i = 0; i < size; i++) {
-            Assertions.assertEquals(compareList.get(i), list.get(i));
-        }
+        compare(compareList, list);
 
 
     }
@@ -132,12 +129,9 @@ public class MyLinkedListTest {
         LinkedList<Integer> compareList = new LinkedList<>(Arrays.asList(1, 2, 3, 4));
 
         int size = list.size();
-        Assertions.assertEquals(4, size);
 
 
-        for (int i = 0; i < size; i++) {
-            Assertions.assertEquals(compareList.get(i), list.get(i));
-        }
+        Assertions.assertEquals(compareList.size(), size);
 
 
     }
@@ -147,14 +141,13 @@ public class MyLinkedListTest {
         MyLinkedList<Integer> list = new MyLinkedList<>();
         LinkedList<Integer> listCompare = new LinkedList<>(Arrays.asList(4, 3, 2, 1));
 
-
         list.addAll(1, 2, 3, 4);
 
 
         MyLinkedList<Integer> listReverse = list.reverse();
-        for (int i = 0; i < list.size(); i++) {
-            Assertions.assertEquals(listCompare.get(i), listReverse.get(i));
-        }
+
+
+        compare(listCompare, listReverse);
 
 
     }
@@ -173,13 +166,16 @@ public class MyLinkedListTest {
         Assertions.assertEquals(compareList.size(), list.size());
 
 
-        int compareListLastIndex = compareList.size() - 1;
+       compare(compareList, list);
 
+    }
+
+    private void compare(List<?> compareList, MyLinkedList<?> list) {
+        int compareListLastIndex = compareList.size() - 1;
 
         for (int i = 0; i <= compareListLastIndex; i++) {
             Assertions.assertEquals(compareList.get(i), list.get(i));
         }
-
     }
 
 
