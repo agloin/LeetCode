@@ -11,17 +11,20 @@ import java.util.NoSuchElementException;
 class MyLinkedList<E> {
 
     private Node<E> head;
-    private int size = 1;
+    private Node<E> tail;
+    private int size = 0;
 
     public void add(E element) {
-        if (head == null) head = new Node<>(element, null);
-        else {
-            Node<E> tmp = head;
+        Node<E> newNode = new Node<>(element, null);
 
-            while (tmp.next != null) tmp = tmp.next;
-            tmp.next = new Node<>(element, null);
-            size++;
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = tail.next;
         }
+        size++;
     }
 
     @SafeVarargs // не понимаю, почему здесь нужна эта аннотация и модификатор final
@@ -36,15 +39,29 @@ class MyLinkedList<E> {
 
         if (size == 0 || index >= size || index < 0) throw new NoSuchElementException();
 
-        for (int i = 0; i < index - 1; i++) {
-            tmp = tmp.next;
+
+        if (index == size - 1) {
+            while (tmp.next.next != null) {
+                tmp = tmp.next;
+            }
+            tail = tmp;
+            tail.next = null;
+        } else if (index == 0) {
+            head = head.next;
+        } else if (index == 1) {
+           head.next = head.next.next;
+        } else { // remove(1)          1-2-3-4
+            for (int i = 0; i < index; ++i) {
+                tmp = tmp.next;
+            }
+            tmp.next = tmp.next.next;
         }
-        tmp.next = tmp.next.next;
         size--;
     }
 
     public E get(int index) {
         if (head == null) throw new IndexOutOfBoundsException("this Index is null");
+        if (index == size - 1) return tail.element;
 
         Node<E> tmp = head;
 
@@ -60,22 +77,29 @@ class MyLinkedList<E> {
         return size;
     }
 
-    public MyLinkedList<E> reverse() {
-        MyLinkedList<E> tmp = new MyLinkedList<>();
+    public void reverse() {
+        Node<E> curr = head;
+        Node<E> prev = null;
 
-        for (int i = size - 1; i >= 0; i--) {
-            tmp.add(get(i));
+        while (curr != null) {
+            Node<E> next = curr.next; //4-5
+            curr.next = prev; //3-2-1
+            prev = curr; //
+            curr = next;
         }
-        return tmp;
-    }
 
+        Node<E> tmp = head;
+        head = tail;
+        tail = tmp;
+    }
 
 
     private static class Node<E> {
         E element;
         Node<E> next;
 
-        Node(E element, Node<E> next) {
+
+        public Node(E element, Node<E> next) {
             this.element = element;
             this.next = next;
         }
@@ -87,9 +111,7 @@ public class MyLinkedListTest {
     @Test
     void testAdd() {
         MyLinkedList<Integer> list = new MyLinkedList<>();
-
-        LinkedList<Integer> compareList  = new LinkedList<>();
-        compareList.addAll(Arrays.asList(1, 2, 3, 4));
+        LinkedList<Integer> compareList = new LinkedList<>(Arrays.asList(1, 2, 3, 4));
 
         list.add(1);
         list.add(2);
@@ -120,6 +142,7 @@ public class MyLinkedListTest {
 
 
     }
+
     @Test
     void testSize() {
         MyLinkedList<Integer> list = new MyLinkedList<>();
@@ -144,29 +167,56 @@ public class MyLinkedListTest {
         list.addAll(1, 2, 3, 4);
 
 
-        MyLinkedList<Integer> listReverse = list.reverse();
+        list.reverse();
 
 
-        compare(listCompare, listReverse);
-
+        compare(listCompare, list);
+        compare(Arrays.asList(4, 3, 2, 1), list);
 
     }
 
     @Test
-    void testRemove() {
+    void testRemoveMiddle() {
         MyLinkedList<Integer> list = new MyLinkedList<>();
 
         list.addAll(1, 2, 3, 4);
+        list.remove(1);
 
+
+        Assertions.assertEquals(3, list.size());
+
+
+        compare(Arrays.asList(1, 3, 4), list);
+
+    }
+
+    @Test
+    void testRemoveFirst() {
+        MyLinkedList<Integer> list = new MyLinkedList<>();
+
+        list.addAll(1, 2, 3, 4);
+        list.remove(0);
+
+
+        Assertions.assertEquals(3, list.size());
+
+
+        compare(Arrays.asList(2, 3, 4), list);
+
+    }
+
+    @Test
+    void testRemoveLast() {
+        MyLinkedList<Integer> list = new MyLinkedList<>();
+
+        list.addAll(1, 2, 3, 4);
         list.remove(3);
 
-        LinkedList<Integer> compareList = new LinkedList<>(Arrays.asList(1, 2, 3));
+
+        Assertions.assertEquals(3, list.size());
 
 
-        Assertions.assertEquals(compareList.size(), list.size());
-
-
-       compare(compareList, list);
+        compare(Arrays.asList(1, 2, 3), list);
 
     }
 
