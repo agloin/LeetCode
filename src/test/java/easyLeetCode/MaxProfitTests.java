@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
-
-// 7,1,5,3,6,4
 class MaxProfit {
     public int maxProfit(int[] prices) {
         int minPrice = 100000;
