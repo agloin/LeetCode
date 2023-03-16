@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Objects;
 
+// https://leetcode.com/problems/valid-palindrome/description/
 class IsValidPalindrome {
     public boolean isPalindrome(String s) {
         if (Objects.equals(s, " ")) return true;
