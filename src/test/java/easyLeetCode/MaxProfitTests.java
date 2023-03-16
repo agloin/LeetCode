@@ -5,20 +5,21 @@ import org.junit.jupiter.api.Test;
 
 
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
+
+// 7,1,5,3,6,4
 class MaxProfit {
     public int maxProfit(int[] prices) {
-        int maxDif = -1;
-        int dif;
-        for (int i = 0; i < prices.length; i++) {
-            for (int j = i + 1; j < prices.length; j++) {
-                dif = prices[j] - prices[i];
-                if (maxDif < dif) {
-                    maxDif = dif;
-                }
+        int minPrice = 100000;
+        int maxProfit = 0;
+
+        for (int price : prices) {
+            if (price < minPrice) {
+                minPrice = price;
+            } else if (price - minPrice > maxProfit) {
+                maxProfit = price - minPrice;
             }
         }
-        if (maxDif > 0) return maxDif;
-        return 0;
+        return maxProfit;
     }
 }
 
