@@ -9,20 +9,11 @@ import java.util.Stack;
 
 //push(E element), pop(); peek()
 class MyStack<E> {
-    private Node<E> head;
     private Node<E> tail;
     private int size = 0;
 
     public void push(E element) {
-
-        Node<E> newNode = new Node<>(element, null);
-        if (tail == null) {
-            head = newNode;
-            tail = head;
-        } else {
-            tail.next = newNode;
-            tail = tail.next;
-        }
+        tail = new Node<>(element, tail);
         size++;
     }
 
@@ -30,24 +21,8 @@ class MyStack<E> {
     public E pop() {
         if (tail == null) throw new NoSuchElementException();
 
-        E res;
-        if (head.next == null) {
-            res = head.element;
-
-            head = null;
-            tail = null;
-            size--;
-            return res;
-        }
-
-        Node<E> tmp = head;
-        while(tmp.next.next != null) {
-            tmp = tmp.next;
-        }
-        res = tmp.next.element;
-
-        tail = tmp;
-        tail.next = null;
+        E res = tail.element;
+        tail = tail.prev;
         size--;
         return res;
     }
@@ -66,11 +41,11 @@ class MyStack<E> {
 
     private static class Node<E> {
         E element;
-        Node<E> next;
+        Node<E> prev;
 
-        public Node(E element, Node<E> next) {
+        public Node(E element, Node<E> prev) {
             this.element = element;
-            this.next = next;
+            this.prev = prev;
         }
     }
 
@@ -86,6 +61,7 @@ public class MyStackTest {
             myStack.push(i);
             stack.push(i);
         }
+
         Assertions.assertEquals(stack.size(), myStack.size());
     }
 
@@ -97,8 +73,8 @@ public class MyStackTest {
         for (int i = 0; i < 10; i++) {
             myStack.push(i);
             stack.push(i);
-            Assertions.assertEquals(stack.pop(), myStack.pop());
         }
+        Assertions.assertEquals(stack.pop(), myStack.pop());
         Assertions.assertEquals(stack.size(), myStack.size());
     }
 
@@ -111,8 +87,8 @@ public class MyStackTest {
         for (int i = 0; i < 10; i++) {
             myStack.push(i);
             stack.push(i);
+            Assertions.assertEquals(stack.pop(), myStack.pop());
         }
-        Assertions.assertEquals(stack.pop(), myStack.pop());
         Assertions.assertEquals(stack.size(), myStack.size());
     }
 
